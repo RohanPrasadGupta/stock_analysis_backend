@@ -13,7 +13,8 @@ app.use(cookieParser());
 const allowedOrigins = [
   "http://localhost:3001",
   "http://localhost:3000",
-  "https://rpgstockanalysis.netlify.app"
+  "https://rpgstockanalysis.netlify.app",
+  "https://rpgmoney-mgr.netlify.app"
 ];
 
 const corsOptions = {
