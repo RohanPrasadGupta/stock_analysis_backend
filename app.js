@@ -3,6 +3,8 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const stockRoutes = require("./routes/stockRoutes");
+const stockCapitalRoutes = require("./routes/stockCapitalRoutes");
+const coinCapitalRoutes = require("./routes/coinCapitalRoutes");
 
 const app = express();
 app.use(express.json());
@@ -25,6 +27,8 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 app.use("/api", stockRoutes);
+app.use("/api", stockCapitalRoutes);
+app.use("/api", coinCapitalRoutes);
 
 app.get("/", (req, res) => {
   res.send("API is running...");
