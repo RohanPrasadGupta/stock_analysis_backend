@@ -5,6 +5,7 @@ const cors = require("cors");
 const stockRoutes = require("./routes/stockRoutes");
 const stockCapitalRoutes = require("./routes/stockCapitalRoutes");
 const coinCapitalRoutes = require("./routes/coinCapitalRoutes");
+const sipCapitalRoutes = require("./routes/sipCapitalRoutes");
 
 const app = express();
 app.use(express.json());
@@ -30,6 +31,7 @@ app.use(cors(corsOptions));
 app.use("/api", stockRoutes);
 app.use("/api", stockCapitalRoutes);
 app.use("/api", coinCapitalRoutes);
+app.use("/api", sipCapitalRoutes);
 
 app.get("/", (req, res) => {
   res.send("API is running...");
