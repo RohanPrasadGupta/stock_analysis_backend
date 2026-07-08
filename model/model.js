@@ -41,6 +41,10 @@ const stockTransactionSchema = new mongoose.Schema(
       type: Date,
       required: [true, "Invested date is required"],
     },
+    useForAvgPrice: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true, // Automatically adds createdAt and updatedAt fields

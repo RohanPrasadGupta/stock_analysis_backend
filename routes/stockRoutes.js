@@ -63,6 +63,24 @@ router.get("/transactions", async (req, res) => {
   }
 });
 
+router.patch("/transactions/use-for-avg-price/:id", async (req, res) => {
+  try {
+    const result = await updateTransaction(req.params.id, { useForAvgPrice: req.body.useForAvgPrice });
+    if (result.success) {
+      return res.status(200).json(result);
+    } else {
+      return res.status(404).json(result);
+    }
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+});
+
+
 /**
  * @route   GET /api/transactions/:id
  * @desc    Get a single stock transaction by ID
