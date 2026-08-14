@@ -22,6 +22,13 @@ const coinCapitalSchema = new mongoose.Schema(
       required: [true, "Total amount is required"],
       min: [0, "Total amount must be a positive number"],
     },
+    currency: {
+      type: String,
+      required: true,
+      uppercase: true,
+      trim: true,
+      default: "THB",
+    },
   },
   {
     timestamps: true, // Automatically adds createdAt and updatedAt fields
