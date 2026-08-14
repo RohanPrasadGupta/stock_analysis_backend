@@ -11,6 +11,13 @@ const stockCapitalSchema = new mongoose.Schema(
       required: [true, "Amount is required"],
       min: [0, "Amount must be a positive number"],
     },
+    currency: {
+      type: String,
+      required: true,
+      uppercase: true,
+      trim: true,
+      default: "NPR",
+    },
   },
   {
     timestamps: true, // Automatically adds createdAt and updatedAt fields

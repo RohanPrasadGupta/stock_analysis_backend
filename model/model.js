@@ -41,6 +41,13 @@ const stockTransactionSchema = new mongoose.Schema(
       type: Date,
       required: [true, "Invested date is required"],
     },
+    currency: {
+      type: String,
+      required: true,
+      uppercase: true,
+      trim: true,
+      default: "NPR",
+    },
     useForAvgPrice: {
       type: Boolean,
       default: false,
