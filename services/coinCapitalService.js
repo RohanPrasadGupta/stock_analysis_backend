@@ -39,12 +39,32 @@ const getAllCoinCapitals = async (filters = {}) => {
       }
     }
 
+    if (filters.type) {
+      query.type = String(filters.type).toUpperCase();
+    }
+
     const capitals = await CoinCapital.find(query).sort({ date: -1 });
-    
-    // Calculate totals
-    const totalAmount = capitals.reduce((sum, record) => sum + record.amount, 0);
-    const totalTransactionCharge = capitals.reduce((sum, record) => sum + record.transactionCharge, 0);
-    const grandTotal = capitals.reduce((sum, record) => sum + record.totalAmount, 0);
+
+    const buyRecords = capitals.filter((record) => (record.type || "BUY") === "BUY");
+    const sellRecords = capitals.filter((record) => record.type === "SELL");
+
+    const totalBuyAmount = buyRecords.reduce((sum, record) => sum + record.amount, 0);
+    const totalSellAmount = sellRecords.reduce((sum, record) => sum + record.amount, 0);
+    const totalBuyTransactionCharge = buyRecords.reduce(
+      (sum, record) => sum + record.transactionCharge,
+      0
+    );
+    const totalSellTransactionCharge = sellRecords.reduce(
+      (sum, record) => sum + record.transactionCharge,
+      0
+    );
+    const totalBuyGrand = buyRecords.reduce((sum, record) => sum + record.totalAmount, 0);
+    const totalSellGrand = sellRecords.reduce((sum, record) => sum + record.totalAmount, 0);
+
+    const totalAmount = totalBuyAmount - totalSellAmount;
+    const totalTransactionCharge =
+      totalBuyTransactionCharge + totalSellTransactionCharge;
+    const grandTotal = totalBuyGrand - totalSellGrand;
     
     return {
       success: true,
@@ -54,6 +74,10 @@ const getAllCoinCapitals = async (filters = {}) => {
         totalAmount,
         totalTransactionCharge,
         grandTotal,
+        totalBuyAmount,
+        totalSellAmount,
+        totalBuyGrand,
+        totalSellGrand,
       },
       message: "Coin capital records retrieved successfully",
     };
@@ -199,9 +223,26 @@ const getCoinCapitalSummary = async () => {
       };
     }
 
-    const totalAmount = capitals.reduce((sum, record) => sum + record.amount, 0);
-    const totalTransactionCharge = capitals.reduce((sum, record) => sum + record.transactionCharge, 0);
-    const grandTotal = capitals.reduce((sum, record) => sum + record.totalAmount, 0);
+    const buyRecords = capitals.filter((record) => (record.type || "BUY") === "BUY");
+    const sellRecords = capitals.filter((record) => record.type === "SELL");
+
+    const totalBuyAmount = buyRecords.reduce((sum, record) => sum + record.amount, 0);
+    const totalSellAmount = sellRecords.reduce((sum, record) => sum + record.amount, 0);
+    const totalBuyTransactionCharge = buyRecords.reduce(
+      (sum, record) => sum + record.transactionCharge,
+      0
+    );
+    const totalSellTransactionCharge = sellRecords.reduce(
+      (sum, record) => sum + record.transactionCharge,
+      0
+    );
+    const totalBuyGrand = buyRecords.reduce((sum, record) => sum + record.totalAmount, 0);
+    const totalSellGrand = sellRecords.reduce((sum, record) => sum + record.totalAmount, 0);
+
+    const totalAmount = totalBuyAmount - totalSellAmount;
+    const totalTransactionCharge =
+      totalBuyTransactionCharge + totalSellTransactionCharge;
+    const grandTotal = totalBuyGrand - totalSellGrand;
     const firstInvestmentDate = capitals[0].date;
     const lastInvestmentDate = capitals[capitals.length - 1].date;
 
@@ -211,6 +252,10 @@ const getCoinCapitalSummary = async () => {
         totalAmount,
         totalTransactionCharge,
         grandTotal,
+        totalBuyAmount,
+        totalSellAmount,
+        totalBuyGrand,
+        totalSellGrand,
         recordCount: capitals.length,
         firstInvestmentDate,
         lastInvestmentDate,

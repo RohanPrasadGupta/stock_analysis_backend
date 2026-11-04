@@ -13,7 +13,7 @@ const {
  * @route   POST /api/coin-capital
  * @desc    Create a new coin capital record
  * @access  Public
- * @body    { date: "2022-01-20", amount: 30000, transactionCharge: 300, totalAmount: 30300 }
+ * @body    { date: "2022-01-20", amount: 30000, transactionCharge: 300, totalAmount: 30300, type: "BUY" }
  */
 router.post("/coin-capital", async (req, res) => {
   try {
@@ -36,7 +36,7 @@ router.post("/coin-capital", async (req, res) => {
 /**
  * @route   GET /api/coin-capital
  * @desc    Get all coin capital records with optional filters
- * @query   startDate, endDate
+ * @query   startDate, endDate, type (BUY | SELL)
  * @access  Public
  */
 router.get("/coin-capital", async (req, res) => {
@@ -44,6 +44,7 @@ router.get("/coin-capital", async (req, res) => {
     const filters = {
       startDate: req.query.startDate,
       endDate: req.query.endDate,
+      type: req.query.type,
     };
 
     const result = await getAllCoinCapitals(filters);
@@ -89,7 +90,7 @@ router.get("/coin-capital/:id", async (req, res) => {
  * @route   PUT /api/coin-capital/:id
  * @desc    Update a coin capital record
  * @access  Public
- * @body    { date: "2022-01-20", amount: 35000, transactionCharge: 350, totalAmount: 35350 }
+ * @body    { date: "2022-01-20", amount: 35000, transactionCharge: 350, totalAmount: 35350, type: "SELL" }
  */
 router.put("/coin-capital/:id", async (req, res) => {
   try {
@@ -113,7 +114,7 @@ router.put("/coin-capital/:id", async (req, res) => {
  * @route   PATCH /api/coin-capital/:id
  * @desc    Partially update a coin capital record
  * @access  Public
- * @body    { amount: 35000 }
+ * @body    { amount: 35000, type: "BUY" }
  */
 router.patch("/coin-capital/:id", async (req, res) => {
   try {
