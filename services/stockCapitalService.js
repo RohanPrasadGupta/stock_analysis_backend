@@ -39,16 +39,27 @@ const getAllCapitals = async (filters = {}) => {
       }
     }
 
+    if (filters.type) {
+      query.type = String(filters.type).toUpperCase();
+    }
+
     const capitals = await StockCapital.find(query).sort({ date: -1 });
     
-    // Calculate total capital invested
-    const totalAmount = capitals.reduce((sum, record) => sum + record.amount, 0);
+    const totalBuyAmount = capitals
+      .filter((record) => (record.type || "BUY") === "BUY")
+      .reduce((sum, record) => sum + record.amount, 0);
+    const totalSellAmount = capitals
+      .filter((record) => record.type === "SELL")
+      .reduce((sum, record) => sum + record.amount, 0);
+    const totalAmount = totalBuyAmount - totalSellAmount;
     
     return {
       success: true,
       data: capitals,
       count: capitals.length,
-      totalAmount: totalAmount,
+      totalAmount,
+      totalBuyAmount,
+      totalSellAmount,
       message: "Capital records retrieved successfully",
     };
   } catch (error) {
@@ -171,7 +182,13 @@ const getCapitalSummary = async () => {
       };
     }
 
-    const totalCapital = capitals.reduce((sum, record) => sum + record.amount, 0);
+    const totalBuyAmount = capitals
+      .filter((record) => (record.type || "BUY") === "BUY")
+      .reduce((sum, record) => sum + record.amount, 0);
+    const totalSellAmount = capitals
+      .filter((record) => record.type === "SELL")
+      .reduce((sum, record) => sum + record.amount, 0);
+    const totalCapital = totalBuyAmount - totalSellAmount;
     const firstInvestmentDate = capitals[0].date;
     const lastInvestmentDate = capitals[capitals.length - 1].date;
 
@@ -179,6 +196,8 @@ const getCapitalSummary = async () => {
       success: true,
       data: {
         totalCapital,
+        totalBuyAmount,
+        totalSellAmount,
         recordCount: capitals.length,
         firstInvestmentDate,
         lastInvestmentDate,

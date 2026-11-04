@@ -13,7 +13,7 @@ const {
  * @route   POST /api/capital
  * @desc    Create a new stock capital record
  * @access  Public
- * @body    { date: "2022-03-15", amount: 50000 }
+ * @body    { date: "2022-03-15", amount: 50000, type: "BUY" }
  */
 router.post("/capital", async (req, res) => {
   try {
@@ -36,7 +36,7 @@ router.post("/capital", async (req, res) => {
 /**
  * @route   GET /api/capital
  * @desc    Get all stock capital records with optional filters
- * @query   startDate, endDate
+ * @query   startDate, endDate, type (BUY | SELL)
  * @access  Public
  */
 router.get("/capital", async (req, res) => {
@@ -44,6 +44,7 @@ router.get("/capital", async (req, res) => {
     const filters = {
       startDate: req.query.startDate,
       endDate: req.query.endDate,
+      type: req.query.type,
     };
 
     const result = await getAllCapitals(filters);
@@ -89,7 +90,7 @@ router.get("/capital/:id", async (req, res) => {
  * @route   PUT /api/capital/:id
  * @desc    Update a stock capital record
  * @access  Public
- * @body    { date: "2022-03-15", amount: 55000 }
+ * @body    { date: "2022-03-15", amount: 55000, type: "SELL" }
  */
 router.put("/capital/:id", async (req, res) => {
   try {
@@ -113,7 +114,7 @@ router.put("/capital/:id", async (req, res) => {
  * @route   PATCH /api/capital/:id
  * @desc    Partially update a stock capital record
  * @access  Public
- * @body    { amount: 55000 }
+ * @body    { amount: 55000, type: "BUY" }
  */
 router.patch("/capital/:id", async (req, res) => {
   try {

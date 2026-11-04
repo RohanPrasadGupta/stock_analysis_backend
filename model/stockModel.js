@@ -11,6 +11,16 @@ const stockCapitalSchema = new mongoose.Schema(
       required: [true, "Amount is required"],
       min: [0, "Amount must be a positive number"],
     },
+    type: {
+      type: String,
+      required: [true, "Transaction type is required"],
+      enum: {
+        values: ["BUY", "SELL"],
+        message: "Type must be either BUY or SELL",
+      },
+      uppercase: true,
+      default: "BUY",
+    },
     currency: {
       type: String,
       required: true,
