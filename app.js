@@ -6,6 +6,7 @@ const stockRoutes = require("./routes/stockRoutes");
 const stockCapitalRoutes = require("./routes/stockCapitalRoutes");
 const coinCapitalRoutes = require("./routes/coinCapitalRoutes");
 const sipCapitalRoutes = require("./routes/sipCapitalRoutes");
+const ssfCapitalRoutes = require("./routes/ssfCapitalRoutes");
 
 const app = express();
 app.use(express.json());
@@ -32,6 +33,7 @@ app.use("/api", stockRoutes);
 app.use("/api", stockCapitalRoutes);
 app.use("/api", coinCapitalRoutes);
 app.use("/api", sipCapitalRoutes);
+app.use("/api", ssfCapitalRoutes);
 
 app.get("/", (req, res) => {
   res.send("API is running...");
