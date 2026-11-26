@@ -114,6 +114,14 @@ Unlike the other three resources, SIP capital has no `PATCH` route — only `PUT
 | `DELETE` | `/api/coin-capital/:id` | Delete |
 | `GET` | `/api/coin-capital/summary/total` | `totalAmount`, `totalTransactionCharge`, `grandTotal`, `recordCount`, first/last dates, `averageAmount`, `averageTransactionCharge` |
 
+### Export — `routes/exportRoutes.js`
+
+| Method | Path | Returns |
+|---|---|---|
+| GET | `/api/export` | `{ data: { exportedAt, "stock-transactions", "stock-capital", "coin-capital", "sip-capital", "ssf-capital" } }` — every document as stored |
+
+The keys match MoneyMgr v2's investment import sources. Used by the frontend's **Export Data → Download Excel backup**.
+
 ## Business logic worth knowing
 
 - **Average price is a frontend concern.** This backend has no average-price calculation endpoint — it only stores `useForAvgPrice` per transaction; the moneyMgr frontend decides which BUY rows to include when computing the displayed average price for a symbol.
